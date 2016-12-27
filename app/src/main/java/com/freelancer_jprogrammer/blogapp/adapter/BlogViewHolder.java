@@ -15,6 +15,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -58,10 +60,23 @@ public class BlogViewHolder extends RecyclerView.ViewHolder {
         postDescription.setText( description );
     }
 
-    public void setImage(Context context, String image )
+    public void setImage(final Context context, final String image )
     {
-        Picasso.with( context ).load( image ).into( target );
+        FirebaseUtils.enableOfflineSync( context );
+        //Picasso.with( context ).load( image ).into( target );
 
+        Picasso.with( context ).load( image ).networkPolicy(NetworkPolicy.OFFLINE ).into(postImage,
+                new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with( context ).load( image ).into( target );
+                    }
+                });
     }
 
     public void setUserName( String userName )

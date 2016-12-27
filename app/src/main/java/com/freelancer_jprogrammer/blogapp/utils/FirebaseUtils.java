@@ -1,5 +1,6 @@
 package com.freelancer_jprogrammer.blogapp.utils;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +64,8 @@ public class FirebaseUtils {
     private static FirebaseAuth firebaseAuth;
     private static FirebaseAuth.AuthStateListener authStateListener;
     private static FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter;
+
+    private static Picasso built;
 
     private static GoogleSignInOptions googleSignInOptions;
     private static GoogleApiClient googleApiClient;
@@ -504,5 +509,18 @@ public class FirebaseUtils {
     public static Query getPostsFromCurrentUser()
     {
         return getBlogReference().orderByChild( "userID" ).equalTo( getFirebaseAuth().getCurrentUser().getUid() );
+    }
+
+    public static void enableOfflineSync( Context context )
+    {
+        if( built == null )
+        {
+            Picasso.Builder builder = new Picasso.Builder( context );
+            builder.downloader( new OkHttpDownloader( context.getApplicationContext(), Integer.MAX_VALUE ));
+            built = builder.build();
+            built.setIndicatorsEnabled( false );
+            built.setLoggingEnabled( true );
+            Picasso.setSingletonInstance( built );
+        }
     }
 }

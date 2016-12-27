@@ -30,6 +30,7 @@ public class BlogSingleActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog_single);
+        //FirebaseUtils.enableOfflineSync( this );
 
         postKey = getIntent().getStringExtra( "BLOG_ID" );
 

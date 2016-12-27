@@ -53,6 +53,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        //FirebaseUtils.enableOfflineSync( this );
 
         titleField = (EditText) findViewById( R.id.titleField );
         descField = (EditText) findViewById( R.id.descField );
